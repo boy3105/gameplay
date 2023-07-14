@@ -1,0 +1,43 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  #word {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  
+  #input {
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+  #score {
+    font-size: 18px;
+  }
+  
+  #timer {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  #scoreValue {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .alert {
+    background-color: #ffc107;
+    color: #333;
+    padding: 10px;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  

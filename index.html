@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="style.css">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trò chơi gõ chữ</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Trò chơi gõ chữ</h1>
+  <p id="word"></p>
+  <input type="text" id="input" autofocus>
+  <p id="score">Điểm: <span id="scoreValue">0</span></p>
+  <p id="timer">Thời gian còn lại: <span id="timeLeft">10</span></p>
+
+  <script>
+    // Danh sách các từ/câu
+    var words = [
+    "Cat",
+"Dog",
+"Sun",
+"House",
+"Book",
+"Table",
+"Friend",
+"Beautiful",
+"Delicious",
+"Responsibility",
+"Ambiguous",
+"Conscientious",
+"Indefatigable",
+"Exacerbate",
+"Incomprehensible",
+    ];
+
+    var currentWordIndex = 0;
+    var score = 0;
+    var timeLeft = 40;
+    var timer;
+
+    // Hiển thị từ/câu mới
+    function showNewWord() {
+      document.getElementById("word").textContent = words[currentWordIndex];
+      document.getElementById("input").value = "";
+    }
+
+    // Kiểm tra tính đúng đắn của từ/câu
+    function checkWord(event) {
+      var input = document.getElementById("input").value;
+      var currentWord = words[currentWordIndex];
+
+      if (event.key === "Enter" && input.trim() === currentWord.trim()) {
+        score++;
+        document.getElementById("scoreValue").textContent = score;
+        currentWordIndex++;
+        if (currentWordIndex >= words.length) {
+          currentWordIndex = 0;
+        }
+        showNewWord();
+      }
+    }
+
+    // Bắt đầu trò chơi
+    function startGame() {
+      showNewWord();
+      document.getElementById("input").addEventListener("keydown", checkWord);
+
+      // Thiết lập đếm ngược thời gian
+      timer = setInterval(function() {
+        timeLeft--;
+        document.getElementById("timeLeft").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    // Kết thúc trò chơi
+    function endGame() {
+      clearInterval(timer);
+      document.getElementById("input").removeEventListener("keydown", checkWord);
+      alert("Trò chơi kết thúc! Điểm của bạn: " + score);
+    }
+
+    // Bắt đầu trò chơi khi trang được tải
+    window.onload = startGame;
+  </script>
+</body>
+</html>
