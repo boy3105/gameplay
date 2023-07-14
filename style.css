@@ -1,43 +1,90 @@
 body {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+h1 {
+  color: #333;
+}
+
+#word {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+#input {
+  padding: 10px;
+  font-size: 18px;
+}
+
+#score {
+  font-size: 18px;
+  color: #333;
+}
+
+#timer {
+  font-size: 18px;
+  margin-top: 20px;
+  color: #333;
+}
+
+#scoreValue {
+  font-weight: bold;
+  color: #007bff;
+}
+
+#wrong {
+  animation: shake 0.3s;
+  animation-iteration-count: 1;
+  border-color: red;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
   }
-  
-  h1 {
-    color: #333;
+  25% {
+    transform: translateX(-5px);
   }
-  
-  #word {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 20px 0;
+  75% {
+    transform: translateX(5px);
   }
-  
-  #input {
-    padding: 10px;
-    font-size: 18px;
+  100% {
+    transform: translateX(0);
   }
-  
-  #score {
-    font-size: 18px;
-  }
-  
-  #timer {
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  
-  #scoreValue {
-    font-weight: bold;
-    color: #007bff;
-  }
-  
-  .alert {
-    background-color: #ffc107;
-    color: #333;
-    padding: 10px;
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  
+}
+
+#result {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+#startButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#startButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#startButton:hover {
+  background-color: #0056b3;
+}
+
+.wrong {
+  animation: shake 0.3s;
+  animation-iteration-count: 1;
+  border-color: red;
+}
+
+
