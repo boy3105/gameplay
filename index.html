@@ -1,15 +1,8 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="style.css">
-<!DOCTYPE html>
 <html>
 <head>
   <title>Trò chơi gõ chữ</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
   <h1>Trò chơi gõ chữ</h1>
@@ -18,117 +11,147 @@
   <p id="score">Điểm: <span id="scoreValue">0</span></p>
   <p id="timer">Thời gian còn lại: <span id="timeLeft">10</span></p>
   <p id="result" style="display: none;"></p>
-<button id="startButton">Bắt đầu lại</button>
+  <label for="difficulty">Độ khó:</label>
+  <select id="difficulty">
+    <option value="1">Dễ</option>
+    <option value="2">Trung bình</option>
+    <option value="3">Khó</option>
+  </select>
+  <button id="startButton">Bắt đầu lại</button>
 
-<script>
-  // Danh sách các từ/câu
-var words = [
-  "Cat",
-  "Dog",
-  "Sun",
-  "House",
-  "Book",
-  "Table",
-  "Friend",
-  "Beautiful",
-  "Delicious",
-  "Responsibility",
-  "Ambiguous",
-  "Conscientious",
-  "Indefatigable",
-  "Exacerbate",
-  "Incomprehensible",
-];
+  <script>
+    // Danh sách các từ/câu
+    var words = [
+"Paradoxical",
+"Eccentricity",
+"Exquisite",
+"Serendipity",
+"Mellifluous",
+"Magnanimous",
+"Resplendent",
+"Ineffable",
+"Epiphany",
+"Enigmatic",
+"Perseverance",
+"Intricate",
+"Melancholy",
+"Ambiguous",
+"Querulous"
+    ];
 
-var currentWordIndex = 0;
-var score = 0;
-var timeLeft = 40;
-var timer;
+    var currentWordIndex = 0;
+    var score = 0;
+    var timeLeft = 40;
+    var timer;
 
-// Hiển thị từ/câu mới
-function showNewWord() {
-  document.getElementById("word").textContent = words[currentWordIndex];
-  document.getElementById("input").value = "";
-}
+    // Hiển thị từ/câu mới
+    function showNewWord() {
+      document.getElementById("word").textContent = words[currentWordIndex];
+      document.getElementById("input").value = "";
+    }
 
-// Kiểm tra tính đúng đắn của từ/câu
-function checkWord(event) {
-  var input = document.getElementById("input").value;
-  var currentWord = words[currentWordIndex];
+    // Kiểm tra tính đúng đắn của từ/câu
+    function checkWord(event) {
+      var input = document.getElementById("input").value;
+      var currentWord = words[currentWordIndex];
 
-  if (event.key === "Enter" && input.trim() === currentWord.trim()) {
-    score++;
-    document.getElementById("scoreValue").textContent = score;
-    currentWordIndex++;
-    if (currentWordIndex >= words.length) {
+      if (event.key === "Enter" && input.trim() === currentWord.trim()) {
+        score++;
+        document.getElementById("scoreValue").textContent = score;
+        currentWordIndex++;
+        if (currentWordIndex >= words.length) {
+          currentWordIndex = 0;
+        }
+        showNewWord();
+      } else if (event.key === "Enter") {
+        document.getElementById("input").classList.add("wrong");
+        setTimeout(function () {
+          document.getElementById("input").classList.remove("wrong");
+        }, 1000);
+      }
+    }
+
+    // Reset thời gian dựa trên độ khó
+    function resetTime() {
+      var difficulty = parseInt(document.getElementById("difficulty").value);
+      var timeMultiplier = 1;
+
+      switch (difficulty) {
+        case 1:
+          timeMultiplier = 1.25;
+          break;
+        case 2:
+          timeMultiplier = 1;
+          break;
+        case 3:
+          timeMultiplier = 0.5;
+          break;
+        default:
+          timeMultiplier = 1;
+          break;
+      }
+
+      timeLeft = Math.round(40 * timeMultiplier);
+      document.getElementById("timeLeft").textContent = timeLeft;
+    }
+
+    // Bắt đầu trò chơi
+    function startGame() {
+      var selectDifficulty = document.getElementById("difficulty");
+      selectDifficulty.addEventListener("change", resetTime);
+
+      resetTime();
+      showNewWord();
+      document.getElementById("input").addEventListener("keydown", checkWord);
+
+      // Thiết lập đếm ngược thời gian
+      timer = setInterval(function () {
+        timeLeft--;
+        document.getElementById("timeLeft").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    // Kết thúc trò chơi
+    function endGame() {
+      clearInterval(timer);
+      document.getElementById("input").removeEventListener("keydown", checkWord);
+      alert("Trò chơi kết thúc! Điểm của bạn: " + score);
+      enableRestartButton();
+    }
+
+    // Kích hoạt nút "Bắt đầu lại"
+    function enableRestartButton() {
+      document.getElementById("startButton").disabled = false;
+    }
+
+    // Bắt đầu lại trò chơi
+    function restartGame() {
+      score = 0;
+      timeLeft = 40;
       currentWordIndex = 0;
+      showNewWord();
+      document.getElementById("scoreValue").textContent = score;
+      document.getElementById("timeLeft").textContent = timeLeft;
+      document.getElementById("result").textContent = "";
+      disableRestartButton();
+      startGame();
     }
-    showNewWord();
-  } else if (event.key === "Enter") {
-    document.getElementById("input").classList.add("wrong");
-    setTimeout(function () {
-      document.getElementById("input").classList.remove("wrong");
-    }, 1000);
-  }
-}
 
-// Bắt đầu trò chơi
-function startGame() {
-  showNewWord();
-  document.getElementById("input").addEventListener("keydown", checkWord);
-
-  // Thiết lập đếm ngược thời gian
-  timer = setInterval(function () {
-    timeLeft--;
-    document.getElementById("timeLeft").textContent = timeLeft;
-
-    if (timeLeft <= 0) {
-      endGame();
+    // Vô hiệu hóa nút "Bắt đầu lại"
+    function disableRestartButton() {
+      document.getElementById("startButton").disabled = true;
     }
-  }, 1000);
-}
 
-// Kết thúc trò chơi
-function endGame() {
-  clearInterval(timer);
-  document.getElementById("input").removeEventListener("keydown", checkWord);
-  alert("Trò chơi kết thúc! Điểm của bạn: " + score);
-  enableRestartButton();
-}
-
-// Kích hoạt nút "Bắt đầu lại"
-function enableRestartButton() {
-  document.getElementById("startButton").disabled = false;
-}
-
-// Bắt đầu lại trò chơi
-function restartGame() {
-  score = 0;
-  timeLeft = 40;
-  currentWordIndex = 0;
-  showNewWord();
-  document.getElementById("scoreValue").textContent = score;
-  document.getElementById("timeLeft").textContent = timeLeft;
-  document.getElementById("result").textContent = "";
-  disableRestartButton();
-  startGame();
-}
-
-// Vô hiệu hóa nút "Bắt đầu lại"
-function disableRestartButton() {
-  document.getElementById("startButton").disabled = true;
-}
-
-// Bắt đầu trò chơi khi trang được tải
-window.onload = function () {
-  startGame();
-  document.getElementById("startButton").addEventListener("click", restartGame);
-  disableRestartButton();
-};
-
-</script>
-
+    // Bắt đầu trò chơi khi trang được tải
+    window.onload = function () {
+      startGame();
+      document.getElementById("startButton").addEventListener("click", restartGame);
+      disableRestartButton();
+    };
+  </script>
 </body>
 </html>
-
-
