@@ -1,94 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Anton', sans-serif;
+}
 body {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #acbaca;
+}
+.clock {
+    position: relative;
+    display: flex;
+    gap: 20px;
+}
+.clock .digital {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #c9d5e0;
+    border-radius: 30px;
+    box-shadow: 20px 20px 20px -10px rgba(0, 0, 0, 0.15),
+    inset 15px 15px 10px rgba(255, 255, 255, 0.5),
+    -15px -15px 35px rgba(255, 255, 255, 0.35),
+    inset -1px -1px 10px rgba(0, 0, 0, 0.2);
+}
+.clock .digital .screen {
+    position: absolute;
+    inset: 20px;
+    background: #152b4a;
+    border-radius: 20px;
+    box-shadow: 5px 5px 15px 0 #152b4a66,
+    inset 5px 5px 5px rgba(255, 255, 255, 0.35),
+    -6px -6px 10px rgba(255, 255, 255, 1);
+}
+.clock .digital .screen::before {
+    font-family: fantasy;
+    content: attr(data-text);
+    position: absolute;
+    bottom: -21px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.75);
+    color: #333;
+    text-transform: uppercase;
+}
+.clock .digital .time {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.clock .digital .time div {
+    position: absolute;
+    font-size: 2em;
+    color: var(--clr);
+    letter-spacing: 0.1em;
+    margin-left: 0.1em;
+    font-family: fantasy;
+}
+.clock .digital:nth-last-child(2) .time div {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--clr);
+}
+.clock .digital:last-child::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    color: #152b4a;
+    border: 2px solid #fff;
+    z-index: 1000;
+    border-radius: 50%;
+}
+.clock .digital:last-child::after {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    background: #152b4a;
+    border-radius: 50%;
+    box-shadow: 5px 5px 15px 0 #152b4a66,
+    inset 5px 5px 5px rgba(255, 255, 255, 0.35),
+    -6px -6px 10px rgba(255, 255, 255, 1);
+}
+.box {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: 1000;
+}   
+.box::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 30px;
+    background: var(--clr);
+    border-radius: 4px;
+}
+.box:nth-child(1):after{
+    height: 20px;
+    width: 4px;
+}
+.box:nth-child(2):after{
+    height: 25px;
+    width: 3px;
+}
+#ampm {
+    position: absolute;
+    font-family: fantasy;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.75);
+    color:#333;
+    letter-spacing: 0.1em;
 }
 
-h1 {
-  color: #333;
-}
-
-#word {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 20px 0;
-}
-
-#input {
-  padding: 10px;
-  font-size: 18px;
-}
-
-#score {
-  font-size: 18px;
-  color: #333;
-}
-
-#timer {
-  font-size: 18px;
-  margin-top: 20px;
-  color: #333;
-}
-
-#scoreValue {
-  font-weight: bold;
-  color: #007bff;
-}
-
-#wrong {
-  animation: shake 0.3s;
-  animation-iteration-count: 1;
-  border-color: red;
-}
-
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-#result {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-#startButton {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#startButton:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-#startButton:hover {
-  background-color: #0056b3;
-}
-
-.wrong {
-  animation: shake 0.3s;
-  animation-iteration-count: 1;
-  border-color: red;
-}
-
-#difficulty {
-  margin-top: 20px;
-  font-size: 16px;
-  padding: 5px 10px;
-}
