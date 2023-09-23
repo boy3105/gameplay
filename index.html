@@ -1,157 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Trò chơi gõ chữ</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Trò chơi gõ chữ</h1>
-  <p id="word"></p>
-  <input type="text" id="input" autofocus>
-  <p id="score">Điểm: <span id="scoreValue">0</span></p>
-  <p id="timer">Thời gian còn lại: <span id="timeLeft">10</span></p>
-  <p id="result" style="display: none;"></p>
-  <label for="difficulty">Độ khó:</label>
-  <select id="difficulty">
-    <option value="1">Dễ</option>
-    <option value="2">Trung bình</option>
-    <option value="3">Khó</option>
-  </select>
-  <button id="startButton">Bắt đầu lại</button>
+    <div class="clock">
+        <div class="digital" style="--clr:#ff2972;">
+            <div class="screen" data-text="Hours">
+                <div class="time">
+                    <div id="hour"></div>
+                </div>
+            </div>
+        </div>
+        <div class="digital" style="--clr:#fee800;">
+            <div class="screen" data-text="Minutes">
+                <div class="time">
+                    <div id="minutes"></div>
+                </div>
+            </div>
+        </div>
+        <div class="digital" style="--clr:#04fc43;">
+            <div class="screen" data-text="Seconds">
+                <div class="time">
+                    <div id="seconds"></div>
+                </div>
+            </div>
+        </div>
+        <div class="digital">
+            <div class="box" id="hr" style="--clr:#ff2972;"></div>
+            <div class="box" id="mn" style="--clr:#fee800;"></div>
+            <div class="box" id="sc" style="--clr:#04fc43;"></div>
+            <div id="ampm"></div>
+        </div>
+    </div>
+    <script>
+        let hours = document.getElementById('hour');
+        let minute = document.getElementById('minutes');
+        let seconds = document.getElementById('seconds');
+        let ampm = document.getElementById('ampm');
 
-  <script>
-    // Danh sách các từ/câu
-    var words = [
-"Paradoxical",
-"Eccentricity",
-"Exquisite",
-"Serendipity",
-"Mellifluous",
-"Magnanimous",
-"Resplendent",
-"Ineffable",
-"Epiphany",
-"Enigmatic",
-"Perseverance",
-"Intricate",
-"Melancholy",
-"Ambiguous",
-"Querulous"
-    ];
+        let hr = document.querySelector("#hr");
+        let mn = document.querySelector("#mn");
+        let sc = document.querySelector("#sc");
 
-    var currentWordIndex = 0;
-    var score = 0;
-    var timeLeft = 40;
-    var timer;
+        setInterval(() =>{
+        let h = new Date().getHours();
+        let m = new Date().getMinutes();
+        let s = new Date().getSeconds();
 
-    // Hiển thị từ/câu mới
-    function showNewWord() {
-      document.getElementById("word").textContent = words[currentWordIndex];
-      document.getElementById("input").value = "";
-    }
+        var am = h >= 12 ? 'PM' : 'AM';
 
-    // Kiểm tra tính đúng đắn của từ/câu
-    function checkWord(event) {
-      var input = document.getElementById("input").value;
-      var currentWord = words[currentWordIndex];
-
-      if (event.key === "Enter" && input.trim() === currentWord.trim()) {
-        score++;
-        document.getElementById("scoreValue").textContent = score;
-        currentWordIndex++;
-        if (currentWordIndex >= words.length) {
-          currentWordIndex = 0;
+        // convert 24hr clock to 12hr clock
+        if (h>12){
+            h = h - 12;
         }
-        showNewWord();
-      } else if (event.key === "Enter") {
-        document.getElementById("input").classList.add("wrong");
-        setTimeout(function () {
-          document.getElementById("input").classList.remove("wrong");
-        }, 1000);
-      }
-    }
 
-    // Reset thời gian dựa trên độ khó
-    function resetTime() {
-      var difficulty = parseInt(document.getElementById("difficulty").value);
-      var timeMultiplier = 1;
+        // add zero before single digit numbers 
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0   " + m : m;
+        s = (s < 10) ? "0" + s : s;
 
-      switch (difficulty) {
-        case 1:
-          timeMultiplier = 1.25;
-          break;
-        case 2:
-          timeMultiplier = 1;
-          break;
-        case 3:
-          timeMultiplier = 0.5;
-          break;
-        default:
-          timeMultiplier = 1;
-          break;
-      }
-
-      timeLeft = Math.round(40 * timeMultiplier);
-      document.getElementById("timeLeft").textContent = timeLeft;
-    }
-
-    // Bắt đầu trò chơi
-    function startGame() {
-      var selectDifficulty = document.getElementById("difficulty");
-      selectDifficulty.addEventListener("change", resetTime);
-
-      resetTime();
-      showNewWord();
-      document.getElementById("input").addEventListener("keydown", checkWord);
-
-      // Thiết lập đếm ngược thời gian
-      timer = setInterval(function () {
-        timeLeft--;
-        document.getElementById("timeLeft").textContent = timeLeft;
-
-        if (timeLeft <= 0) {
-          endGame();
-        }
-      }, 1000);
-    }
-
-    // Kết thúc trò chơi
-    function endGame() {
-      clearInterval(timer);
-      document.getElementById("input").removeEventListener("keydown", checkWord);
-      alert("Trò chơi kết thúc! Điểm của bạn: " + score);
-      enableRestartButton();
-    }
-
-    // Kích hoạt nút "Bắt đầu lại"
-    function enableRestartButton() {
-      document.getElementById("startButton").disabled = false;
-    }
-
-    // Bắt đầu lại trò chơi
-    function restartGame() {
-      score = 0;
-      timeLeft = 40;
-      currentWordIndex = 0;
-      showNewWord();
-      document.getElementById("scoreValue").textContent = score;
-      document.getElementById("timeLeft").textContent = timeLeft;
-      document.getElementById("result").textContent = "";
-      disableRestartButton();
-      startGame();
-    }
-
-    // Vô hiệu hóa nút "Bắt đầu lại"
-    function disableRestartButton() {
-      document.getElementById("startButton").disabled = true;
-    }
-
-    // Bắt đầu trò chơi khi trang được tải
-    window.onload = function () {
-      startGame();
-      document.getElementById("startButton").addEventListener("click", restartGame);
-      disableRestartButton();
-    };
-  </script>
+        hours.innerHTML = h;
+        minute.innerHTML = m;
+        seconds.innerHTML = s;
+        ampm.innerHTML = am;
+        hr.style.transform = `rotateZ(${h * 30}deg)`;
+        mn.style.transform = `rotateZ(${m * 6}deg)`;
+        sc.style.transform = `rotateZ(${s * 6}deg)`;
+        })
+        
+    </script>
 </body>
 </html>
